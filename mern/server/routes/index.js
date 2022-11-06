@@ -4,13 +4,15 @@ const express = require("express");
 // We use it to define our routes.
 // The router will be added as a middleware and will take control of requests starting with path /record.
 const routes = express.Router();
-
-const {doTest} = require('./test');
+const {addUser, logonUser} = require("./auth"); 
+const {search} = require("./search");
 
 
 
 // This section will help you get a list of all the records.
-routes.route("/test").get(doTest);
+routes.route("/signup").post(addUser);
+routes.route("/login").post(logonUser);
+routes.route("/search").post(search);
 
 
 module.exports = routes;
