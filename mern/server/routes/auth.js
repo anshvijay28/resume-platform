@@ -50,7 +50,6 @@ exports.logonUser = (req, res) => {
         res.status(400).send("Please enter a valid email and password");
         return;
     }
-    console.log(req.body);
     const credentials = Realm.Credentials.emailPassword(req.body.email, req.body.password);
     realmApp.logIn(credentials)
     .then(user => {
