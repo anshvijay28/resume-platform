@@ -5,7 +5,7 @@ const express = require("express");
 // The router will be added as a middleware and will take control of requests starting with path /record.
 const routes = express.Router();
 const {addUser, logonUser} = require("./auth"); 
-const {search} = require("./search");
+const {search, addResume, addResumeFile, getDoc} = require("./search");
 
 
 
@@ -13,6 +13,9 @@ const {search} = require("./search");
 routes.route("/signup").post(addUser);
 routes.route("/login").post(logonUser);
 routes.route("/search").post(search);
+routes.route("/resume").post(addResume);
+routes.route("/file").post(addResumeFile);
+routes.route("/doc").get(getDoc);
 
 
 module.exports = routes;
