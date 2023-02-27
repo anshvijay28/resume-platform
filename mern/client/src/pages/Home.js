@@ -118,28 +118,27 @@ class Home extends Component {
             variant="outlined"
             margin="normal"
             name="search"
-            label="search"
+            label="Search"
             type="search"
             id="search"
+            InputLabelProps={{className: classes.inputText}}
             className={classes.search}
             value={this.state.search}
             onChange={this.handleChange}
             onKeyDown={(e) => (e.key === "Enter" ? this.handleSubmit(e) : null)}
           />
-          <Grid container>
+          <Grid container spacing = {2}>
             {this.state.resumes.map((resume) => (
               <Grid item xs={12} sm={6} md={6} lg={3} key={resume._id}>
-                <div style={{ height: 150, paddingTop: 25 }}>
-                  <div
-                    className={classes.resumeBox}
-                    onClick={() =>
-                      this.setState({ open: true, currentResume: resume })
-                    }
-                  >
-                    <Typography variant="h5">
-                      {resume.name.first + " " + resume.name.last}
-                    </Typography>
-                  </div>
+                <div
+                  className={classes.resumeBox}
+                  onClick={() =>
+                    this.setState({ open: true, currentResume: resume })
+                  }
+                > 
+                  <Typography className = {classes.name} variant="h5">
+                    {resume.name.first + " " + resume.name.last}
+                  </Typography>
                 </div>
               </Grid>
             ))}

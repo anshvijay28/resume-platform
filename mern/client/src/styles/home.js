@@ -29,19 +29,22 @@ const homeStyle = (theme) => ({
   search: {
     alignSelf: "center",
     display: "inline-block",
-    paddingBottom: 25,
-    paddingTop: 25,
+    borderColor: "white",
   },
+  inputText: {
+    color: "#f1f2eb",
+  }, 
   resumeBox: {
     height: 100,
-    border: "1px solid black",
+    border: "1px solid #f1f2eb",
+    borderRadius: "100px",
     alignSelf: "center",
     paddingTop: 30,
     cursor: "pointer",
     '&:hover': {
-        background: "#9be396",
+        background: "#c4843c",
      },
-     background: "#dbedda"
+     background: "#3a5381"
      
   },
   appBar: {
@@ -53,6 +56,12 @@ const homeStyle = (theme) => ({
   container: {
     flexDirection: "column",
     textAlign: "center",
+    paddingRight: 20,
+    paddingLeft: 20,
+    marginTop: 40,
+  },
+  name: {
+    color: "#f1f2eb",
   },
 });
 
