@@ -49,6 +49,10 @@ class Home extends Component {
     this.props.history.push("/login");
   };
 
+  handleAdmin = () => {
+    this.props.history.push("/admin");
+  };
+
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({ loading: true });
@@ -77,17 +81,12 @@ class Home extends Component {
   };
 
   getSrcData = (data) => {
+    console.log(typeof data);
     return "data:application/pdf;base64," + data;
-  };
-
-  getURLFromBlobData = (data) => {
-    let blob = new Blob([data], { type: "application/pdf" });
-    return URL.createObjectURL(blob);
   };
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.resumes);
     if (this.state.loading) {
       return (
         <Backdrop open={this.state.loading} className={classes.backdrop}>
@@ -103,6 +102,14 @@ class Home extends Component {
             <Typography variant="h4" className={classes.title}>
               Resume Platform
             </Typography>
+            <Button
+              style={{ marginLeft: 50 }}
+              color="inherit"
+              className={classes.logout}
+              onClick={this.handleAdmin}
+            >
+              Admin
+            </Button>
             <Button
               style={{ marginLeft: 50 }}
               color="inherit"

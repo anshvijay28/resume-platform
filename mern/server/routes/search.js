@@ -93,7 +93,7 @@ exports.getDoc = async (req, res) => {
                 .collection("resumes")
                 .findOne({_id: new ObjectId(req.query.id)})
                 .then((result) => {
-                    res.json({message: "Successfully added resume", status: "SUCCESS", doc: result});
+                    res.json({message: "Successfully found resume", status: "SUCCESS", doc: result});
                 })
                 .catch((err) => {
                     res.json(err);
