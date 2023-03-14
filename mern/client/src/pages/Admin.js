@@ -99,7 +99,8 @@ class Admin extends Component {
 
   savepdfData = (user) => {
     let pdfURL = this.addQueryParams(`${APP_URL}/file`, {
-      name: this.state.resume.name.first,
+      first: this.state.resume.name.first,
+      last: this.state.resume.name.last
     });
     fetch(pdfURL, {
       method: "POST",
