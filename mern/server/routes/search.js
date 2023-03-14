@@ -48,7 +48,8 @@ exports.addResumeFile = async (req, res) => {
             return;
         } else if (result.action === "PASS") {
             let query = {
-                "name.first": req.query.name
+                "name.first": req.query.first,
+                "name.last": req.query.last
             }
             let db_connect = dbo.getDb();
             db_connect
