@@ -119,9 +119,9 @@ class Home extends Component {
             margin="normal"
             name="search"
             label="Search"
+						InputLabelProps={{style: {color: '#fff'}}}
             type="search"
             id="search"
-            InputLabelProps={{className: classes.inputText}}
             className={classes.search}
             value={this.state.search}
             onChange={this.handleChange}
