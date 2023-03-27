@@ -19,6 +19,7 @@ class Signup extends Component {
 
 		this.state = {
 			name: '',
+			hoveredMenuItem: '',
 			email: '',
 			password: '',
 			confirmPassword: '',
@@ -42,6 +43,19 @@ class Signup extends Component {
 		});
 	};
 
+	handleMenuMouseEnter = (event, brother) => {
+		event.preventDefault();
+		this.setState({
+			hoveredMenuItem: brother
+		});
+	};
+
+	handleMenuMouseLeave = (event) => {
+		event.preventDefault();
+		this.setState({
+			hoveredMenuItem: null
+		});
+	};
 	handleSubmit = (event) => {
 		event.preventDefault();
 		this.setState({ loading: true });
@@ -89,15 +103,26 @@ class Signup extends Component {
 							select
 							id="name"
 							label="Select Name"
+							InputLabelProps={{style: {color: '#fff'}}}
 							name="name"
 							autoComplete="name"
 							helperText={errors.name}
 							error={errors.name ? true : false}
 							onChange={this.handleChange}
 						>
-							
 							{brotherList.map((brother) => (
-								<MenuItem key={brother} value={brother}>
+								<MenuItem 
+								key={brother} 
+								value={brother}
+								onMouseEnter={(event) => this.handleMenuMouseEnter(event, brother)}
+								onMouseLeave={this.handleMenuMouseLeave}
+								style={{
+									backgroundColor: 
+										this.state.name === brother || this.state.hoveredMenuItem === brother ? "white" : "#201F1F",
+									color: 
+										this.state.name === brother || this.state.hoveredMenuItem === brother ? "#201F1F" : "white",
+								}}
+								>
 									{brother}
 								</MenuItem>
 							))}
@@ -110,6 +135,7 @@ class Signup extends Component {
 							fullWidth
 							id="email"
 							label="GT Email Address"
+							InputLabelProps={{style: {color: '#fff'}}}
 							name="email"
 							autoComplete="email"
 							helperText={errors.email}
@@ -124,6 +150,7 @@ class Signup extends Component {
 							fullWidth
 							name="gtid"
 							label="GT ID"
+							InputLabelProps={{style: {color: '#fff'}}}
 							type="number"
 							id="gtid"
 							onChange={this.handleChange}
@@ -136,6 +163,7 @@ class Signup extends Component {
 							fullWidth
 							name="password"
 							label="Password"
+							InputLabelProps={{style: {color: '#fff'}}}
 							type="password"
 							id="password"
 							autoComplete="current-password"
@@ -151,6 +179,7 @@ class Signup extends Component {
 							fullWidth
 							name="confirmPassword"
 							label="Confirm Password"
+							InputLabelProps={{style: {color: '#fff'}}}
 							type="password"
 							id="confirmPassword"
 							autoComplete="current-password"
@@ -172,7 +201,7 @@ class Signup extends Component {
 								}
 						>
 							Sign Up
-							{loading && <CircularProgress size={30} className={classes.progess} />}
+							{loading && <CircularProgress size={30} className={classes.progress} />}
 						</Button>
 						<Grid container justify="flex-end">
 							<Grid item>

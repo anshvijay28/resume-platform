@@ -7,14 +7,14 @@ const signupStyle = (theme) => ({
 	},
 	form: {
 		width: '100%',
-		marginTop: theme.spacing(1)
+		marginTop: theme.spacing(1),
 	},
 	submit: {
 		margin: theme.spacing(3, 0, 2)
 	},
-	progess: {
+	progress: {
 		position: 'absolute'
-	}
+	},
 });
 
 export default signupStyle;

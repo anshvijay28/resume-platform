@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import loginSytles from '../styles/login'
+import loginStyles from '../styles/login'
 import logo from "../static/akpsi-logo.png"
 import {APP_URL} from '../static/constants';
 
@@ -97,6 +97,7 @@ class Login extends Component {
 							fullWidth
 							id="email"
 							label="Email Address"
+							InputLabelProps={{style: {color: '#fff'}}}
 							name="email"
 							autoComplete="email"
 							autoFocus
@@ -111,6 +112,7 @@ class Login extends Component {
 							fullWidth
 							name="password"
 							label="Password"
+							InputLabelProps={{style: {color: '#fff'}}}
 							type="password"
 							id="password"
 							autoComplete="current-password"
@@ -128,7 +130,7 @@ class Login extends Component {
 							disabled={loading || !this.state.email || !this.state.password}
 						>
 							Sign In
-							{loading && <CircularProgress size={30} className={classes.progess} />}
+							{loading && <CircularProgress size={30} className={classes.progress} />}
 						</Button>
 						<Grid container>
 							<Grid item>
@@ -150,4 +152,4 @@ class Login extends Component {
 	}
 }
 
-export default withStyles(loginSytles)(Login);
+export default withStyles(loginStyles)(Login);
