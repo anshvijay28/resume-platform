@@ -29,11 +29,9 @@ const homeStyle = (theme) => ({
   search: {
     alignSelf: "center",
     display: "inline-block",
-    borderColor: "white",
+    paddingBottom: "3vh",
   },
-  inputText: {
-    color: "#f1f2eb",
-  }, 
+ 
   resumeBox: {
     height: 100,
     border: "1px solid #f1f2eb",
@@ -58,7 +56,7 @@ const homeStyle = (theme) => ({
     textAlign: "center",
     paddingRight: 20,
     paddingLeft: 20,
-    marginTop: 40,
+    paddingTop: "3vh"
   },
   name: {
     color: "#f1f2eb",
