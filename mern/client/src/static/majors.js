@@ -29,6 +29,7 @@ const majors = [
 	"Materials Science and Engineering",
 	"Mechanical Engineering",
 	"Nuclear and Radiological Engineering",
+    "Neuroscience",
 	"Physics",
 	"Psychology",
 	"Public Policy",

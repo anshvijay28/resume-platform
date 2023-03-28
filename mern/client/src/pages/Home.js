@@ -50,14 +50,23 @@ class Home extends Component {
     this.props.history.push("/login");
   };
 
-  getMajor = (brotherMajor) => {
+  getMajor = (brotherResume) => {
+    let brotherMajor = brotherResume.education[0].accreditation.inputStr.toLowerCase();
+    if (brotherMajor === '' && brotherResume.education.length > 1) {
+      brotherMajor = brotherResume.education[1].accreditation.inputStr.toLowerCase();
+    }
+    const outlier1 = "Industrial and Systems Engineering";
+    const outlier2 = "Industrial Systems and Engineering";
+    if (brotherMajor.includes(outlier1.toLowerCase()) || brotherMajor.includes(outlier2.toLowerCase())) {
+      return "Industrial Engineering";        
+    }
     for (const major of majorList) {
       if (brotherMajor.includes(major.toLowerCase())) {
         brotherMajor = major;
         return major;
       }
     }
-    return "";
+    return "Other";
   }
 
 
@@ -146,6 +155,7 @@ class Home extends Component {
                   onClick={() => {
                       this.setState({ open: true, currentResume: resume });
                       console.log(resume.education[0].accreditation.inputStr);
+                      console.log(resume);
                     }
                   }
                 > 
@@ -153,7 +163,7 @@ class Home extends Component {
                     {resume.name.first + " " + resume.name.last}
                   </Typography>
                   <Typography className = {classes.major} variant = "h7">
-                    {this.getMajor(resume.education[0].accreditation.inputStr.toLowerCase())}
+                    {this.getMajor(resume)}
                   </Typography>
                 </div>
               </Grid>
