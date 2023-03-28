@@ -13,6 +13,7 @@ import { APP_URL } from "../static/constants";
 import logo from "../static/white-logo.png";
 import Modal from "@material-ui/core/Modal";
 import Grid from "@material-ui/core/Grid";
+import majorList from '../static/majors';
 
 class Home extends Component {
   constructor(props) {
@@ -48,6 +49,17 @@ class Home extends Component {
     localStorage.clear();
     this.props.history.push("/login");
   };
+
+  getMajor = (brotherMajor) => {
+    for (const major of majorList) {
+      if (brotherMajor.includes(major.toLowerCase())) {
+        brotherMajor = major;
+        return major;
+      }
+    }
+    return "";
+  }
+
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -87,7 +99,6 @@ class Home extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.resumes);
     if (this.state.loading) {
       return (
         <Backdrop open={this.state.loading} className={classes.backdrop}>
@@ -132,12 +143,17 @@ class Home extends Component {
               <Grid item xs={12} sm={6} md={6} lg={3} key={resume._id}>
                 <div
                   className={classes.resumeBox}
-                  onClick={() =>
-                    this.setState({ open: true, currentResume: resume })
+                  onClick={() => {
+                      this.setState({ open: true, currentResume: resume });
+                      console.log(resume.education[0].accreditation.inputStr);
+                    }
                   }
                 > 
                   <Typography className = {classes.name} variant="h5">
                     {resume.name.first + " " + resume.name.last}
+                  </Typography>
+                  <Typography className = {classes.major} variant = "h7">
+                    {this.getMajor(resume.education[0].accreditation.inputStr.toLowerCase())}
                   </Typography>
                 </div>
               </Grid>
