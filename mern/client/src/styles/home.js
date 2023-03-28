@@ -61,6 +61,9 @@ const homeStyle = (theme) => ({
   name: {
     color: "#f1f2eb",
   },
+  major: {
+    color: "black",
+  }
 });
 
 export default homeStyle;
