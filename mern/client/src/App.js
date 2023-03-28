@@ -3,6 +3,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
+import Admin from "./pages/Admin";
 import { createTheme } from '@mui/material/styles';
 import {
   BrowserRouter as Router,
@@ -47,6 +48,7 @@ function App() {
             <Route exact path="/" component={withRouter(Home)} />
             <Route exact path="/login" component={withRouter(Login)} />
             <Route exact path="/signup" component={withRouter(Signup)} />
+            <Route exact path="/admin" component={withRouter(Admin)} />
           </Switch>
           </div>
           </Router>

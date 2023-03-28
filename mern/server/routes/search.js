@@ -48,7 +48,8 @@ exports.addResumeFile = async (req, res) => {
             return;
         } else if (result.action === "PASS") {
             let query = {
-                "name.first": req.query.name
+                "name.first": req.query.first,
+                "name.last": req.query.last
             }
             let db_connect = dbo.getDb();
             db_connect
@@ -93,7 +94,7 @@ exports.getDoc = async (req, res) => {
                 .collection("resumes")
                 .findOne({_id: new ObjectId(req.query.id)})
                 .then((result) => {
-                    res.json({message: "Successfully added resume", status: "SUCCESS", doc: result});
+                    res.json({message: "Successfully found resume", status: "SUCCESS", doc: result});
                 })
                 .catch((err) => {
                     res.json(err);
