@@ -13,6 +13,7 @@ import { APP_URL } from "../static/constants";
 import logo from "../static/white-logo.png";
 import Modal from "@material-ui/core/Modal";
 import Grid from "@material-ui/core/Grid";
+import majorList from '../static/majors';
 
 class Home extends Component {
   constructor(props) {
@@ -48,6 +49,26 @@ class Home extends Component {
     localStorage.clear();
     this.props.history.push("/login");
   };
+
+  getMajor = (brotherResume) => {
+    let brotherMajor = brotherResume.education[0].accreditation.inputStr.toLowerCase();
+    if (brotherMajor === '' && brotherResume.education.length > 1) {
+      brotherMajor = brotherResume.education[1].accreditation.inputStr.toLowerCase();
+    }
+    const outlier1 = "Industrial and Systems Engineering";
+    const outlier2 = "Industrial Systems and Engineering";
+    if (brotherMajor.includes(outlier1.toLowerCase()) || brotherMajor.includes(outlier2.toLowerCase())) {
+      return "Industrial Engineering";        
+    }
+    for (const major of majorList) {
+      if (brotherMajor.includes(major.toLowerCase())) {
+        brotherMajor = major;
+        return major;
+      }
+    }
+    return "Other";
+  }
+
 
   handleAdmin = () => {
     this.props.history.push("/admin");
@@ -139,12 +160,18 @@ class Home extends Component {
               <Grid item xs={12} sm={6} md={6} lg={3} key={resume._id}>
                 <div
                   className={classes.resumeBox}
-                  onClick={() =>
-                    this.setState({ open: true, currentResume: resume })
+                  onClick={() => {
+                      this.setState({ open: true, currentResume: resume });
+                      console.log(resume.education[0].accreditation.inputStr);
+                      console.log(resume);
+                    }
                   }
                 > 
                   <Typography className = {classes.name} variant="h5">
                     {resume.name.first + " " + resume.name.last}
+                  </Typography>
+                  <Typography className = {classes.major} variant = "h7">
+                    {this.getMajor(resume)}
                   </Typography>
                 </div>
               </Grid>
