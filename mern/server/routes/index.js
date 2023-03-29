@@ -6,6 +6,7 @@ const express = require("express");
 const routes = express.Router();
 const {addUser, logonUser} = require("./auth"); 
 const {search, addResume, addResumeFile, getDoc} = require("./search");
+const {getConstants} = require("./constants");
 
 
 
@@ -16,6 +17,7 @@ routes.route("/search").post(search);
 routes.route("/resume").post(addResume);
 routes.route("/file").post(addResumeFile);
 routes.route("/doc").get(getDoc);
+routes.route("/constants").get(getConstants);
 
 
 module.exports = routes;

@@ -24,6 +24,7 @@ class Home extends Component {
       loading: false,
       currentResume: {},
       open: false,
+      constants: null
     };
   }
 
@@ -37,7 +38,31 @@ class Home extends Component {
       console.log("user found");
       console.log(JSON.parse(user));
     }
+    this.getConstants();
   }
+
+  getConstants = () => {
+    let userData = localStorage.getItem("user");
+    let user = JSON.parse(userData);
+    fetch(`${APP_URL}/constants`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: user.accessToken
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.constants) {
+          this.setState({ constants: data.constants });
+        }
+      })
+      .catch((err) => {
+        this.setState({ loading: false });
+        this.setState({ errors: err });
+        this.props.history.push("/login");
+      });
+  };
 
   handleChange = (event) => {
     this.setState({
@@ -106,6 +131,12 @@ class Home extends Component {
     return "data:application/pdf;base64," + data;
   };
 
+  getIsAdmin = () => {
+    let userData = localStorage.getItem("user");
+    let user = JSON.parse(userData);
+    return this.state.constants.exec.includes(user.name);
+  }
+
   render() {
     const { classes } = this.props;
     if (this.state.loading) {
@@ -128,6 +159,7 @@ class Home extends Component {
               color="inherit"
               className={classes.logout}
               onClick={this.handleAdmin}
+              disabled={this.state.constants === null || !this.getIsAdmin()}
             >
               Admin
             </Button>
