@@ -15,6 +15,9 @@ import Modal from "@material-ui/core/Modal";
 import Grid from "@material-ui/core/Grid";
 import majorList from '../static/majors';
 
+//pinecone query function 
+import { query } from "../static/Pinecone/upsertAndQuery"
+ 
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -102,6 +105,11 @@ class Home extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({ loading: true });
+    
+    //this causes pre-flight error
+    //it should correctly print out the names of the query once deployed 
+    console.log(query(this.state.search)); 
+
     let userData = localStorage.getItem("user");
     let user = JSON.parse(userData);
     fetch(`${APP_URL}/search`, {
