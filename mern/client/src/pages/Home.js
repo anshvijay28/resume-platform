@@ -108,7 +108,11 @@ class Home extends Component {
     
     //this causes pre-flight error
     //it should correctly print out the names of the query once deployed 
-    console.log(query(this.state.search)); 
+    query(this.state.search).then(result => {
+      console.log(result);
+    }).catch(err => {
+      console.log(err);
+    }) 
 
     let userData = localStorage.getItem("user");
     let user = JSON.parse(userData);
