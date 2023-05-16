@@ -1,10 +1,13 @@
+require("dotenv").config();
+
 const { PineconeClient } = require("@pinecone-database/pinecone");
 
 const fetch = require("cross-fetch");
 const resumes = require("./resumeObjects.json");
-let inputs = resumes.map(resume => resume.rawText);
-const OPEN_AI_API_KEY = "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";
-const PINECONE_API_KEY = "f3a8e1b4-0553-4861-95ef-a793c0fa3baa";
+let inputs = resumes.map((resume) => resume.rawText);
+
+const OPEN_AI_API_KEY = process.env.REACT_APP_OPEN_AI_API;
+const PINECONE_API_KEY = process.env.REACT_APP_PINECONE_API;
 
 async function getEmbeddings(inputs) {
 	let embeddings = [];
@@ -17,7 +20,7 @@ async function getEmbeddings(inputs) {
 		let tokenCount = 0;										// <-------
 		let batchedInputs = [];									// <-------
 		while (inputs.length && tokenCount < 4096) { 			// <-------
-			let input = inputs.shift();                         // <------- tbh this a bunch of bullshit
+			let input = inputs.shift();                         // <------- tbh this a bunch of nonsense
 			batchedInputs.push(input);							// <-------
 			tokenCount += input.split(" ").length;				// <-------
 		}														// <-------
@@ -74,10 +77,10 @@ async function insertVectors() {
 		const upsertRequest = {
 			vectors: batchedVectors,
 			//namespace: "example-namespace",    <------ you only need namespaces if you want to
-			//									 <------ separate embeddings into different groups 
-			//									 <------ within the same index. however in this case 
+			//									 <------ separate embeddings into different groups
+			//									 <------ within the same index. however in this case
 			//									 <------ every vector represents a resume so there
-			//									 <------ is no need to partition vectors 
+			//									 <------ is no need to partition vectors
 		}
 		const upsertResponse = await index.upsert({ upsertRequest });
 		insertBatches.push(upsertResponse);
@@ -100,8 +103,8 @@ export async function query(searchEntry) {
 		body: JSON.stringify(apiRequestBody),
 	});
 	const embeddingResult = await apiRequest.json();
-	let userVector = embeddingResult.data[0].embedding; 
-	
+	let userVector = embeddingResult.data[0].embedding;
+
 	const pinecone = new PineconeClient();
 	await pinecone.init({
 		environment: "eu-west1-gcp",
@@ -118,7 +121,6 @@ export async function query(searchEntry) {
 	let matches = queryResponse.matches;
 	let matchingNames = matches.map(match=>match.metadata.name)
 	//console.log(matchingNames);
-	return matchingNames 
+	return matchingNames
 }
-
 
