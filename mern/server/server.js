@@ -11,7 +11,7 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 
-app.use(express.static('../client/public'));
+app.use(express.static(path.join(__dirname, '../client/public')))
 
 app.use(require("./routes/index"));
 const {getAdminKey} = require("./routes/admin");
