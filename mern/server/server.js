@@ -12,16 +12,16 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname + 'mern/client/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname + 'mern/client/build/index.html'));
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
-app.use(require("./mern/server/routes/index"));
-const {getAdminKey} = require("./mern/server/routes/admin");
+app.use(require("./routes/index"));
+const {getAdminKey} = require("./routes/admin");
 // get driver connection
-const dbo = require("./mern/server/db/conn");
+const dbo = require("./db/conn");
 
 app.listen(port, () => {
   getAdminKey();
