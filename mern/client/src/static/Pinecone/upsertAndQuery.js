@@ -1,4 +1,5 @@
-require("dotenv").config();
+const path = require("path");
+require("dotenv").config({path: path.join(__dirname, '../../../', '.env')});
 
 const { PineconeClient } = require("@pinecone-database/pinecone");
 
@@ -88,7 +89,7 @@ async function insertVectors() {
 	console.log(insertBatches);
 }
 
-export async function query(searchEntry) {
+async function query(searchEntry) {
 	const apiRequestBody = {
 		input: searchEntry,
 		model: "text-embedding-ada-002",
