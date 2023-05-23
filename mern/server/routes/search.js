@@ -1,3 +1,6 @@
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, '../', 'config.env') });
+
 // This will help us connect to the database
 const dbo = require("../db/conn");
 const Realm = require("realm");
@@ -5,6 +8,8 @@ const realmApp = new Realm.App({id: process.env.APP_ID});
 const bson = require('bson');
 const {verifyClientToken} = require("./admin");
 var ObjectId = require('mongodb').ObjectID;
+
+console.log(process.env.APP_ID);
 
 exports.addResume = async (req, res) => {
     if (req.body.resume === undefined || req.headers.accesstoken === undefined) {

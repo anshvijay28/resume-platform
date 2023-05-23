@@ -3,7 +3,7 @@ const path = require("path");
 const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.raw({type: 'application/pdf', limit: '50mb'}));
-require("dotenv").config({ path: "./config.env" });
+require("dotenv").config({ path: path.join(__dirname, 'config.env') });
 const port = process.env.PORT || 5000;
 const cors = require("cors");
 // app.use(cors({
