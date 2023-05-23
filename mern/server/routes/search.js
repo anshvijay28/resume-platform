@@ -1,3 +1,6 @@
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, '../', 'config.env') });
+
 // This will help us connect to the database
 const dbo = require("../db/conn");
 const Realm = require("realm");
