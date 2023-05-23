@@ -44,6 +44,9 @@ mongodb-realm/
 config.env
 .env
 
+#production
+mern/client/build/
+
 # TypeScript v1 declaration files
 typings/
 
