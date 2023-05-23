@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node mern/server/server.js"
+    "start": "node mern/server/server.js",
+    "heroku-postbuild": "cd mern/client/ && npm run build"
   },
   "keywords": [],
   "author": "",
