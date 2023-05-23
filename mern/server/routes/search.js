@@ -9,8 +9,6 @@ const bson = require('bson');
 const {verifyClientToken} = require("./admin");
 var ObjectId = require('mongodb').ObjectID;
 
-console.log(process.env.APP_ID);
-
 exports.addResume = async (req, res) => {
     if (req.body.resume === undefined || req.headers.accesstoken === undefined) {
         console.log("bruh u boutta fail");

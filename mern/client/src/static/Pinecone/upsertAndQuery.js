@@ -89,7 +89,7 @@ async function insertVectors() {
 	console.log(insertBatches);
 }
 
-async function query(searchEntry) {
+export async function query(searchEntry) {
 	const apiRequestBody = {
 		input: searchEntry,
 		model: "text-embedding-ada-002",
