@@ -21,7 +21,7 @@
     "mongodb": "^3.6.6",
     "path": "^0.12.7",
     "react-router": "^6.11.2",
-    "react-scripts": "^5.0.1",
+    "react-scripts": "^4.0.3",
     "realm": "^10.22.0"
   }
 }
