@@ -9,7 +9,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import homeStyles from "../styles/home";
-import { APP_URL } from "../static/constants";
+import { DEV_APP_URL, PROD_APP_URL } from "../static/constants";
 import logo from "../static/white-logo.png";
 import Modal from "@material-ui/core/Modal";
 import Grid from "@material-ui/core/Grid";
@@ -47,7 +47,7 @@ class Home extends Component {
   getConstants = () => {
     let userData = localStorage.getItem("user");
     let user = JSON.parse(userData);
-    fetch(`${APP_URL}/constants`, {
+    fetch(`${PROD_APP_URL}/constants`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -116,7 +116,7 @@ class Home extends Component {
 
     let userData = localStorage.getItem("user");
     let user = JSON.parse(userData);
-    fetch(`${APP_URL}/search`, {
+    fetch(`${PROD_APP_URL}/search`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

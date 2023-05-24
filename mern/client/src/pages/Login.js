@@ -11,7 +11,7 @@ import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import loginStyles from '../styles/login'
 import logo from "../static/akpsi-logo.png"
-import {APP_URL} from '../static/constants';
+import { DEV_APP_URL, PROD_APP_URL} from '../static/constants';
 
 class Login extends Component {
 	constructor(props) {
@@ -50,8 +50,9 @@ class Login extends Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
 		this.setState({ loading: true });
+
 		//yeet
-        fetch(`${APP_URL}/login`, {
+        fetch(`${PROD_APP_URL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

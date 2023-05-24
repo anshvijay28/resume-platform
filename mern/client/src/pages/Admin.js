@@ -7,7 +7,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
-import { APP_URL } from "../static/constants";
+import { DEV_APP_URL, PROD_APP_URL } from "../static/constants";
 import logo from "../static/white-logo.png";
 import adminStyle from "../styles/admin";
 
@@ -75,7 +75,7 @@ class Admin extends Component {
     let userData = localStorage.getItem("user");
     let user = JSON.parse(userData);
 
-    fetch(`${APP_URL}/resume`, {
+    fetch(`${PROD_APP_URL}/resume`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -98,7 +98,7 @@ class Admin extends Component {
   };
 
   savepdfData = (user) => {
-    let pdfURL = this.addQueryParams(`${APP_URL}/file`, {
+    let pdfURL = this.addQueryParams(`${PROD_APP_URL}/file`, {
       first: this.state.resume.name.first,
       last: this.state.resume.name.last
     });
