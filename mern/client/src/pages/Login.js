@@ -11,7 +11,7 @@ import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import loginStyles from '../styles/login'
 import logo from "../static/akpsi-logo.png"
-import { DEV_APP_URL, PROD_APP_URL} from '../static/constants';
+import { APP_URL } from '../static/constants';
 
 class Login extends Component {
 	constructor(props) {
@@ -50,9 +50,10 @@ class Login extends Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
 		this.setState({ loading: true });
-
+		console.log("The app URL is " + APP_URL);
+		console.log('The port is ' + process.env.PORT);
 		//yeet
-        fetch(`${PROD_APP_URL}/login`, {
+        fetch(`${APP_URL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

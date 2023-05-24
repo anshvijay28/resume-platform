@@ -9,7 +9,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MenuItem from '@material-ui/core/MenuItem';
 import logo from "../static/akpsi-logo.png"
-import {DEV_APP_URL, PROD_APP_URL} from '../static/constants';
+import {APP_URL} from '../static/constants';
 import signupStyle from '../styles/signup'
 import brotherList from '../static/brothers';
 
@@ -59,7 +59,7 @@ class Signup extends Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
 		this.setState({ loading: true });
-		fetch(`${PROD_APP_URL}/signup`, {
+		fetch(`${APP_URL}/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
