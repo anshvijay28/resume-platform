@@ -67,6 +67,7 @@ class Home extends Component {
       })
       .catch((err) => {
         console.log("The error was " + err);
+        console.log("The port is: " + process.env.NODE_ENV);
         console.log(responseClone);         // <-- added this line to see what the response object was when it was erroring
         this.setState({ loading: false });
         this.setState({ errors: err });
