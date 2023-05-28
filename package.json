@@ -4,8 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node mern/server/server.js",
-    "heroku-postbuild": "npm run build --prefix mern/client"
+    "build": "cd mern/client && npm run build",
+    "install-client": "cd mern/client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "start": "node mern/server/server.js"
   },
   "keywords": [],
   "author": "",
