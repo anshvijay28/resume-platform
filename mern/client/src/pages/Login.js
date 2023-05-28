@@ -51,7 +51,7 @@ class Login extends Component {
 		event.preventDefault();
 		this.setState({ loading: true });
 		console.log("The app URL is " + APP_URL);
-		console.log('The port is ' + process.env.PORT);
+		console.log("We are in " + process.env.NODE_ENV);
 		//yeet
         fetch(`${APP_URL}/login`, {
             method: 'POST',
