@@ -10,16 +10,6 @@ const cors = require("cors");
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 
-// // define routes
-// const authRoute = require("./routes/auth");
-// const adminRoute = require("./routes/admin");
-// const constantsRoute = require("./routes/constants");
-
-// // use routes
-// app.use('/auth', authRoute);
-// app.use('/admin', adminRoute);
-// app.use('/constants', constantsRoute);
-
 app.use(require("./routes/index"));
 const {getAdminKey} = require("./routes/admin");
 
