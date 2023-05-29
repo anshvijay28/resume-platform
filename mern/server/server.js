@@ -10,6 +10,14 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 
+// define routes
+const constantsRoute = require("./routes/constants");
+const adminRoute = require("./routes/admin");
+
+// use routes
+app.use('/constants', constantsRoute);
+app.use('/admin', adminRoute);
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, '../client/build')));
 
