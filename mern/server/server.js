@@ -20,18 +20,23 @@ app.use(express.json());
 // app.use('/admin', adminRoute);
 // app.use('/constants', constantsRoute);
 
+app.use(require("./routes/index"));
+const {getAdminKey} = require("./routes/admin");
+
+// get driver connection
+const dbo = require("./db/conn");
+
 if (process.env.NODE_ENV === "production") {
+  dbo.connectToServer(function (err) {
+    if (err) console.error(err);
+  });
+
   app.use(express.static(path.join(__dirname, '../client/build')));
 
   app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, '../client/build/index.html'));
   });
 }
-
-app.use(require("./routes/index"));
-const {getAdminKey} = require("./routes/admin");
-// get driver connection
-const dbo = require("./db/conn");
 
 app.listen(port, () => {
   getAdminKey();
