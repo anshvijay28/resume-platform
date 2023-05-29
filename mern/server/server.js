@@ -7,16 +7,18 @@ app.use(bodyParser.json());
 require("dotenv").config({ path: path.join(__dirname, 'config.env') });
 const port = process.env.PORT || 5000;
 const cors = require("cors");
-app.use(cors());
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 // define routes
-const constantsRoute = require("./routes/constants");
+const authRoute = require("./routes/auth");
 const adminRoute = require("./routes/admin");
+const constantsRoute = require("./routes/constants");
 
 // use routes
-app.use('/constants', constantsRoute);
+app.use('/auth', authRoute);
 app.use('/admin', adminRoute);
+app.use('/constants', constantsRoute);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, '../client/build')));
