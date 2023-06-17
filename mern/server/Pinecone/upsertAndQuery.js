@@ -114,14 +114,14 @@ async function query(searchEntry) {
 	const index = pinecone.Index("resumes");
 	const queryRequest = {
 		vector: userVector,
-		topK: 10,
+		topK: 30,
 		includeValues: false,
 		includeMetadata: true,
 	};	
 	const queryResponse = await index.query({ queryRequest });
 	let matches = queryResponse.matches;
 	let matchingNames = matches.map(match=>match.metadata.name)
-	return matchingNames
+	return matchingNames;
 }
 
 module.exports = { query };

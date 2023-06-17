@@ -110,24 +110,10 @@ class Home extends Component {
     event.preventDefault();
     this.setState({ loading: true });
 
-    fetch(`${APP_URL}/pinecone`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        search: this.state.search,
-      }),
-    })
-    .then(res => res.json())
-    .then(names => {
-      console.log(names)
-    })
-    .catch(err => console.log(err));
-    
     let userData = localStorage.getItem("user");
     let user = JSON.parse(userData);
-    fetch(`${APP_URL}/search`, {
+
+    fetch(`${APP_URL}/pinecone`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -137,16 +123,16 @@ class Home extends Component {
         search: this.state.search,
       }),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.results) {
-          this.setState({ resumes: data.results, loading: false });
-        }
-      })
-      .catch((err) => {
-        this.setState({ loading: false });
-        this.props.history.push("/login");
-      });
+    .then(res => res.json())
+    .then(data => {
+      if (data.results) {
+        this.setState({ resumes: data.results, loading: false });
+      }
+    })
+    .catch(err => {
+      this.setState({ loading: false });
+      this.props.history.push("/login");
+    });
   };
 
   getSrcData = (data) => {

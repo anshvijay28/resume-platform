@@ -21,5 +21,4 @@ routes.route("/doc").get(getDoc);
 routes.route("/constants").get(getConstants);
 routes.route("/pinecone").post(pineconeQuery);
 
-
 module.exports = routes;

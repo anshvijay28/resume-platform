@@ -109,6 +109,7 @@ exports.getDoc = async (req, res) => {
     });
 }
 
+//Legacy Search (Thanks Mrinal)
 exports.search = async (req, res) => {
     if (req.body.search === undefined || req.headers.accesstoken === undefined) {
         res.status(400).send("Missing required fields");
@@ -150,9 +151,3 @@ exports.search = async (req, res) => {
     });
     
 }
-
-
-
-
-
-    
