@@ -6,6 +6,7 @@ app.use(bodyParser.raw({type: 'application/pdf', limit: '50mb'}));
 app.use(bodyParser.json());
 require("dotenv").config({ path: path.join(__dirname, 'config.env') });
 const port = process.env.PORT || 5000;
+const host = '0.0.0.0';
 const cors = require("cors");
 app.use(cors({ origin: "*" }));
 app.use(express.json());
@@ -27,12 +28,12 @@ if (process.env.NODE_ENV === "production") {
   app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, '../client/build/index.html'));
   });
-} else {
-  app.listen(port, () => {
-    getAdminKey();
-    
-    console.log(`Server is running on port: ${port}`);
-  });
 }
+
+app.listen(port, host, () => {
+  getAdminKey();
+  
+  console.log(`Server is running on port: ${port}`);
+});
 
 
