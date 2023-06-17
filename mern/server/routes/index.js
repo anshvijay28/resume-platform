@@ -7,6 +7,7 @@ const routes = express.Router();
 const {addUser, logonUser} = require("./auth"); 
 const {search, addResume, addResumeFile, getDoc} = require("./search");
 const {getConstants} = require("./constants");
+const {pineconeQuery} = require("./pinecone");
 
 
 
@@ -18,6 +19,7 @@ routes.route("/resume").post(addResume);
 routes.route("/file").post(addResumeFile);
 routes.route("/doc").get(getDoc);
 routes.route("/constants").get(getConstants);
+routes.route("/pinecone").post(pineconeQuery);
 
 
 module.exports = routes;
