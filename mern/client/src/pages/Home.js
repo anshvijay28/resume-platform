@@ -118,13 +118,12 @@ class Home extends Component {
       body: JSON.stringify({
         search: this.state.search,
       }),
-    }).then(res => {
-      res.json().then(response => {
-        console.log(response);
-      })
-    }).catch(err => {
-      console.log(err);
-    });
+    })
+    .then(res => res.json())
+    .then(names => {
+      console.log(names)
+    })
+    .catch(err => console.log(err));
     
     let userData = localStorage.getItem("user");
     let user = JSON.parse(userData);
