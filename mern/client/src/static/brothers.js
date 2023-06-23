@@ -1,2 +1,10 @@
-const brotherList = ['Aditi Bhatia', 'Aki Talkad', 'Amrita Sarker', 'Annie Seth', 'Anuraag Agarwal', 'Kevin Joseph', 'Arshad Mandani', 'Ira Sabnis', 'Karen Liu', 'Matthew Woodward', 'Megan Dass', 'Naveen Kamath', 'Neil Dange', 'Nupur Dandavate', 'Paritosh Suri', 'Poojan Mehta', 'Riya Bhanushali', 'Roshni Dhanasekar', 'Ruthvika Garlapati', 'Sameer Sridhar', 'Sarang Pujari', 'Saurav Behera', 'Shruthi Saravanan', 'Srinidhi Nandala', 'Srishti Mendiratta', 'Suhas Mummigatti', 'Sreekar Madabushi', 'Suhas Yalamarti', 'Adit Jindal', 'Lekha Gowda', 'Medhana Kadiyala', 'Shrey Patel', 'Anish Umredkar', 'Bill Merickel', 'Pranav Pusarla', 'Marissa Gardner', 'Ila Sharma', 'Manav Ramprasad', 'Nikhil Krishnan', 'Akshita Sharma', 'Tanya Pattani', 'Pantach (Peem) Anantapong', 'Aditya Garg', 'Adithya Gurunathan', 'Mrinal Chanshetty', 'Skanda Sriganesh', 'Anish Jannu', 'Himanee Hendre', 'Rahi Patel', 'Elaine Wen', 'Anuhya Kasam', 'Rhea Pabbati', 'Natasha Havanur', 'Anisha Rangi', 'Srivya Sabbella', 'Dhivya Gunasekaran', 'Deven Chatterjea', 'Rutika Karande', 'Gary Thomas', 'Rohan Daswani', 'Sreya Srinivas', 'Anithra Sivakumar', 'Amogh Gadekar', 'Shaydon DSouza', 'Vaishnavi Vuyyuru', 'Alex Kim', 'Fawaz Sabir', 'Jeffery Pai'];
+const brotherList = ['Aamay Puntambekar', 'Abigail Xie', 'Adithya Gurunathan', 'Aditya Garg', 'Ajai Singh', 'Akshita Sharma', 'Amogh Gadekar',
+'Anish Jannu', 'Anish Umredkar', 'Anisha Gurram', 'Anisha Rangi', 'Anithra Sivakumar', 'Ansh Vijay', 'Ansh Malbari', 'Anuhya Dhanala',
+'Anuhya Kasam', 'Avyaktha Paruchuri', 'Bill Merickel', 'Deven Chatterjea', 'Dhivya Gunasekaran', 'Ekta Mistry', 'Farbod Gerami',
+'Fawaz Sabir', 'Gary Thomas', 'Harsh Shah', 'Himanee Hendre', 'Jeffrey Pai', 'Karthik Iyer', 'Kriti Madhusudan', 'Lily Littrell', 'Lucy Scott',
+'Malen Patel', 'Manav Ramprasad', 'Mayank Agrawal', 'Mrinal Chanshetty', 'Nikhil Krishnan', 'Oieshee Akter', 'Parth Gandhi', 'Pranav Viswanadha',
+'Rahi Patel', 'Rahul Iyer', 'Rhea Sacheti', 'Rhea Pabbati', 'Rida Merani', 'Rohan Daswani', 'Roma Joshi', 'Rutika Karande', 'Samira Cingirikonda',
+'Saurav Behera', 'Shaydon DSouza', 'Siya Sehgal', 'Skanda Sriganesh', 'Sophia Refeca', 'Sreekar Madabushi', 'Sreya Srinivas', 'Srikar Bhumireddy',
+'Srivya Sabella', 'Suhas Yalamarti', 'Tanya Pattani', 'Vaishnavi Vuyyuru', 'Varsha Holsambre'];
+
 export default brotherList.sort();
