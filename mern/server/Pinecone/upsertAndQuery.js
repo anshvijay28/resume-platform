@@ -1,5 +1,5 @@
 const path = require("path");
-require("dotenv").config({path: path.join(__dirname, '../../../', '.env')});
+require("dotenv").config({ path: path.join(__dirname, '../', 'config.env') });
 
 const { PineconeClient } = require("@pinecone-database/pinecone");
 
@@ -7,8 +7,8 @@ const fetch = require("cross-fetch");
 const resumes = require("./resumeObjects.json");
 let inputs = resumes.map((resume) => resume.rawText);
 
-const OPEN_AI_API_KEY = process.env.REACT_APP_OPEN_AI_API;
-const PINECONE_API_KEY = process.env.REACT_APP_PINECONE_API;
+const OPEN_AI_API_KEY = process.env.OPEN_AI_API;
+const PINECONE_API_KEY = process.env.PINECONE_API;
 
 async function getEmbeddings(inputs) {
 	let embeddings = [];
@@ -89,7 +89,7 @@ async function insertVectors() {
 	console.log(insertBatches);
 }
 
-export async function query(searchEntry) {
+async function query(searchEntry) {
 	const apiRequestBody = {
 		input: searchEntry,
 		model: "text-embedding-ada-002",
@@ -114,14 +114,14 @@ export async function query(searchEntry) {
 	const index = pinecone.Index("resumes");
 	const queryRequest = {
 		vector: userVector,
-		topK: 10,
+		topK: 30,
 		includeValues: false,
 		includeMetadata: true,
-	};
+	};	
 	const queryResponse = await index.query({ queryRequest });
 	let matches = queryResponse.matches;
 	let matchingNames = matches.map(match=>match.metadata.name)
-	//console.log(matchingNames);
-	return matchingNames
+	return matchingNames;
 }
 
+module.exports = { query };

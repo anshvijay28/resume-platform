@@ -14,9 +14,6 @@ import logo from "../static/white-logo.png";
 import Modal from "@material-ui/core/Modal";
 import Grid from "@material-ui/core/Grid";
 import majorList from '../static/majors';
-
-//pinecone query function 
-import { query } from "../static/Pinecone/upsertAndQuery"
  
 class Home extends Component {
   constructor(props) {
@@ -45,6 +42,7 @@ class Home extends Component {
   }
 
   getConstants = () => {
+    let responseClone;
     let userData = localStorage.getItem("user");
     let user = JSON.parse(userData);
     fetch(`${APP_URL}/constants`, {
@@ -54,13 +52,19 @@ class Home extends Component {
         accesstoken: user.accessToken
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        responseClone = res.clone();
+        return res.json()
+      })
       .then((data) => {
+        console.log(data);
         if (data.constants) {
           this.setState({ constants: data.constants });
         }
       })
       .catch((err) => {
+        console.log("The error was " + err);
+        console.log(responseClone);         // <-- added this line to see what the response object was when it was erroring
         this.setState({ loading: false });
         this.setState({ errors: err });
         this.props.history.push("/login");
@@ -105,18 +109,11 @@ class Home extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({ loading: true });
-    
-    //this causes pre-flight error
-    //it should correctly print out the names of the query once deployed 
-    query(this.state.search).then(result => {
-      console.log(result);
-    }).catch(err => {
-      console.log(err);
-    }) 
 
     let userData = localStorage.getItem("user");
     let user = JSON.parse(userData);
-    fetch(`${APP_URL}/search`, {
+
+    fetch(`${APP_URL}/pinecone`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -126,16 +123,16 @@ class Home extends Component {
         search: this.state.search,
       }),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.results) {
-          this.setState({ resumes: data.results, loading: false });
-        }
-      })
-      .catch((err) => {
-        this.setState({ loading: false });
-        this.props.history.push("/login");
-      });
+    .then(res => res.json())
+    .then(data => {
+      if (data.results) {
+        this.setState({ resumes: data.results, loading: false });
+      }
+    })
+    .catch(err => {
+      this.setState({ loading: false });
+      this.props.history.push("/login");
+    });
   };
 
   getSrcData = (data) => {
