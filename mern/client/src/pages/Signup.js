@@ -9,7 +9,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MenuItem from '@material-ui/core/MenuItem';
 import logo from "../static/akpsi-logo.png"
-import {APP_URL} from '../static/constants';
+import { APP_URL } from '../static/constants';
 import signupStyle from '../styles/signup'
 import brotherList from '../static/brothers';
 
@@ -60,29 +60,29 @@ class Signup extends Component {
 		event.preventDefault();
 		this.setState({ loading: true });
 		fetch(`${APP_URL}/signup`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: this.state.email,
-                password: this.state.password,
-                name: this.state.name,
-                GTID: this.state.gtid
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.user) {
-				localStorage.setItem('user', data.user);
-				this.props.history.push('/');
-			} else {
-				console.log(data.message);
-			}
-        })
-        .catch(err => {
-            console.log(err);
-        })
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				email: this.state.email,
+				password: this.state.password,
+				name: this.state.name,
+				GTID: this.state.gtid
+			})
+		})
+			.then(res => res.json())
+			.then(data => {
+				if (data.user) {
+					localStorage.setItem('user', data.user);
+					this.props.history.push('/');
+				} else {
+					console.log(data.message);
+				}
+			})
+			.catch(err => {
+				console.log(err);
+			})
 	};
 
 	render() {
@@ -90,9 +90,9 @@ class Signup extends Component {
 		const { errors, loading } = this.state;
 		return (
 			<Container component="main" maxWidth="xs">
-				<CssBaseline/>
+				<CssBaseline />
 				<div className={classes.paper}>
-					<img src={logo} alt={"logo"} 	width={300}></img>
+					<img src={logo} alt={"logo"} width={300}></img>
 
 					<form className={classes.form} noValidate>
 						<TextField
@@ -103,7 +103,7 @@ class Signup extends Component {
 							select
 							id="name"
 							label="Select Name"
-							InputLabelProps={{style: {color: '#fff'}}}
+							InputLabelProps={{ style: { color: '#fff' } }}
 							name="name"
 							autoComplete="name"
 							helperText={errors.name}
@@ -111,17 +111,17 @@ class Signup extends Component {
 							onChange={this.handleChange}
 						>
 							{brotherList.map((brother) => (
-								<MenuItem 
-								key={brother} 
-								value={brother}
-								onMouseEnter={(event) => this.handleMenuMouseEnter(event, brother)}
-								onMouseLeave={this.handleMenuMouseLeave}
-								style={{
-									backgroundColor: 
-										this.state.name === brother || this.state.hoveredMenuItem === brother ? "white" : "#201F1F",
-									color: 
-										this.state.name === brother || this.state.hoveredMenuItem === brother ? "#201F1F" : "white",
-								}}
+								<MenuItem
+									key={brother}
+									value={brother}
+									onMouseEnter={(event) => this.handleMenuMouseEnter(event, brother)}
+									onMouseLeave={this.handleMenuMouseLeave}
+									style={{
+										backgroundColor:
+											this.state.name === brother || this.state.hoveredMenuItem === brother ? "white" : "#201F1F",
+										color:
+											this.state.name === brother || this.state.hoveredMenuItem === brother ? "#201F1F" : "white",
+									}}
 								>
 									{brother}
 								</MenuItem>
@@ -135,7 +135,7 @@ class Signup extends Component {
 							fullWidth
 							id="email"
 							label="GT Email Address"
-							InputLabelProps={{style: {color: '#fff'}}}
+							InputLabelProps={{ style: { color: '#fff' } }}
 							name="email"
 							autoComplete="email"
 							helperText={errors.email}
@@ -143,18 +143,6 @@ class Signup extends Component {
 							onChange={this.handleChange}
 						/>
 
-						<TextField
-							variant="outlined"
-							margin="normal"
-							required
-							fullWidth
-							name="gtid"
-							label="GT ID"
-							InputLabelProps={{style: {color: '#fff'}}}
-							type="number"
-							id="gtid"
-							onChange={this.handleChange}
-						/>
 
 						<TextField
 							variant="outlined"
@@ -163,7 +151,7 @@ class Signup extends Component {
 							fullWidth
 							name="password"
 							label="Password"
-							InputLabelProps={{style: {color: '#fff'}}}
+							InputLabelProps={{ style: { color: '#fff' } }}
 							type="password"
 							id="password"
 							autoComplete="current-password"
@@ -179,7 +167,7 @@ class Signup extends Component {
 							fullWidth
 							name="confirmPassword"
 							label="Confirm Password"
-							InputLabelProps={{style: {color: '#fff'}}}
+							InputLabelProps={{ style: { color: '#fff' } }}
 							type="password"
 							id="confirmPassword"
 							autoComplete="current-password"
@@ -193,12 +181,12 @@ class Signup extends Component {
 							color="primary"
 							className={classes.submit}
 							onClick={this.handleSubmit}
-                            disabled={loading || 
-                                !this.state.email || 
-                                !this.state.password ||
-                                !this.state.name || 
+							disabled={loading ||
+								!this.state.email ||
+								!this.state.password ||
+								!this.state.name ||
 								!this.state.gtid
-								}
+							}
 						>
 							Sign Up
 							{loading && <CircularProgress size={30} className={classes.progress} />}
