@@ -72,7 +72,7 @@ async function insertVectors() {
 	});
 	const vectors = await processEmbeddings();
 	let insertBatches = [];
-	const index = pinecone.Index("resumes");
+	const index = pinecone.Index("resumes-index");
 	while (vectors.length) {
 		let batchedVectors = vectors.splice(0, 250);
 		const upsertRequest = {
@@ -111,7 +111,7 @@ async function query(searchEntry) {
 		environment: "eu-west1-gcp",
 		apiKey: PINECONE_API_KEY,
 	});
-	const index = pinecone.Index("resumes");
+	const index = pinecone.Index("resumes-index");
 	const queryRequest = {
 		vector: userVector,
 		topK: 30,
