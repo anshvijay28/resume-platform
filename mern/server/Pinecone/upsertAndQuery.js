@@ -43,7 +43,7 @@ async function getEmbeddings(inputs) {
 			embeddings = embeddings.concat(
 				embeddingResult.data.map(entry => entry.embedding)
 			);
-		} catch(error) {
+		} catch (error) {
 			console.log("Error: ", error);
 		}
 	}
@@ -72,7 +72,7 @@ async function insertVectors() {
 	});
 	const vectors = await processEmbeddings();
 	let insertBatches = [];
-	const index = pinecone.Index("resumes");
+	const index = pinecone.Index("resumes-index");
 	while (vectors.length) {
 		let batchedVectors = vectors.splice(0, 250);
 		const upsertRequest = {
@@ -106,21 +106,22 @@ async function query(searchEntry) {
 	const embeddingResult = await apiRequest.json();
 	let userVector = embeddingResult.data[0].embedding;
 
+
 	const pinecone = new PineconeClient();
 	await pinecone.init({
 		environment: "eu-west1-gcp",
 		apiKey: PINECONE_API_KEY,
 	});
-	const index = pinecone.Index("resumes");
+	const index = pinecone.Index("resumes-index");
 	const queryRequest = {
 		vector: userVector,
 		topK: 30,
 		includeValues: false,
 		includeMetadata: true,
-	};	
+	};
 	const queryResponse = await index.query({ queryRequest });
 	let matches = queryResponse.matches;
-	let matchingNames = matches.map(match=>match.metadata.name)
+	let matchingNames = matches.map(match => match.metadata.name)
 	return matchingNames;
 }
 
