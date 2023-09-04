@@ -143,6 +143,21 @@ class Signup extends Component {
 							onChange={this.handleChange}
 						/>
 
+						<TextField
+							variant="outlined"
+							margin="normal"
+							required
+							fullWidth
+							id="gtid"
+							label="GT ID"
+							InputLabelProps={{ style: { color: '#fff' } }}
+							name="gtid"
+							autoComplete="gtid"
+							helperText={errors.gtid}
+							error={errors.gtid ? true : false}
+							onChange={this.handleChange}
+						/>
+
 
 						<TextField
 							variant="outlined"

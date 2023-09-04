@@ -14,7 +14,7 @@ import logo from "../static/white-logo.png";
 import Modal from "@material-ui/core/Modal";
 import Grid from "@material-ui/core/Grid";
 import majorList from '../static/majors';
- 
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -90,7 +90,7 @@ class Home extends Component {
     const outlier1 = "Industrial and Systems Engineering";
     const outlier2 = "Industrial Systems and Engineering";
     if (brotherMajor.includes(outlier1.toLowerCase()) || brotherMajor.includes(outlier2.toLowerCase())) {
-      return "Industrial Engineering";        
+      return "Industrial Engineering";
     }
     for (const major of majorList) {
       if (brotherMajor.includes(major.toLowerCase())) {
@@ -123,16 +123,16 @@ class Home extends Component {
         search: this.state.search,
       }),
     })
-    .then(res => res.json())
-    .then(data => {
-      if (data.results) {
-        this.setState({ resumes: data.results, loading: false });
-      }
-    })
-    .catch(err => {
-      this.setState({ loading: false });
-      this.props.history.push("/login");
-    });
+      .then(res => res.json())
+      .then(data => {
+        if (data.results) {
+          this.setState({ resumes: data.results, loading: false });
+        }
+      })
+      .catch(err => {
+        this.setState({ loading: false });
+        this.props.history.push("/login");
+      });
   };
 
   getSrcData = (data) => {
@@ -188,7 +188,7 @@ class Home extends Component {
             margin="normal"
             name="search"
             label="Search"
-						InputLabelProps={{style: {color: '#fff'}}}
+            InputLabelProps={{ style: { color: '#fff' } }}
             type="search"
             id="search"
             className={classes.search}
@@ -196,22 +196,22 @@ class Home extends Component {
             onChange={this.handleChange}
             onKeyDown={(e) => (e.key === "Enter" ? this.handleSubmit(e) : null)}
           />
-          <Grid container spacing = {2}>
+          <Grid container spacing={2}>
             {this.state.resumes.map((resume) => (
               <Grid item xs={12} sm={6} md={6} lg={3} key={resume._id}>
                 <div
                   className={classes.resumeBox}
                   onClick={() => {
-                      this.setState({ open: true, currentResume: resume });
-                      console.log(resume.education[0].accreditation.inputStr);
-                      console.log(resume);
-                    }
+                    this.setState({ open: true, currentResume: resume });
+                    console.log(resume.education[0].accreditation.inputStr);
+                    console.log(resume);
                   }
-                > 
-                  <Typography className = {classes.name} variant="h5">
+                  }
+                >
+                  <Typography className={classes.name} variant="h5">
                     {resume.name.first + " " + resume.name.last}
                   </Typography>
-                  <Typography className = {classes.major} variant = "h7">
+                  <Typography className={classes.major} variant="h7">
                     {this.getMajor(resume)}
                   </Typography>
                 </div>
@@ -221,15 +221,16 @@ class Home extends Component {
         </div>
 
         <Modal open={this.state.open}>
-          <div style={{"height": 750}}>
-            
+          <div style={{ "height": 750 }}>
+
             <iframe
               src={this.getSrcData(this.state.currentResume.fileData)}
               width="100%"
               height="100%"
               title="pdf"
             ></iframe>
-            <Button onClick={() => this.setState({ open: false })} style={{"width": "100%", "backgroundColor": "lightblue"}}>
+
+            <Button onClick={() => this.setState({ open: false })} style={{ "width": "100%", "backgroundColor": "lightblue" }}>
               Close
             </Button>
           </div>
