@@ -106,6 +106,7 @@ async function query(searchEntry) {
 	const embeddingResult = await apiRequest.json();
 	let userVector = embeddingResult.data[0].embedding;
 
+
 	const pinecone = new PineconeClient();
 	await pinecone.init({
 		environment: "eu-west1-gcp",

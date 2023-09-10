@@ -202,10 +202,10 @@ class Home extends Component {
                 <div
                   className={classes.resumeBox}
                   onClick={() => {
-                    this.setState({ open: true, currentResume: resume });
-                    console.log(resume.education[0].accreditation.inputStr);
-                    console.log(resume);
-                  }
+                      this.setState({ open: true, currentResume: resume });
+                      console.log(resume.education[0].accreditation.inputStr);
+                      console.log(resume);
+                    }
                   }
                 >
                   <Typography className={classes.name} variant="h5">
@@ -222,13 +222,12 @@ class Home extends Component {
 
         <Modal open={this.state.open}>
           <div style={{ "height": 750 }}>
-
-            <embed
+            <iframe
               src={this.getSrcData(this.state.currentResume.fileData)}
               width="100%"
               height="100%"
               title="pdf"
-            ></embed>
+            ></iframe>
             <Button onClick={() => this.setState({ open: false })} style={{ "width": "100%", "backgroundColor": "lightblue" }}>
               Close
             </Button>
