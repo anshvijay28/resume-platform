@@ -31,19 +31,20 @@ const homeStyle = (theme) => ({
     display: "inline-block",
     paddingBottom: "3vh",
   },
- 
+
   resumeBox: {
     height: 100,
-    border: "1px solid #f1f2eb",
-    borderRadius: "100px",
+    width: 300,
+    border: "2px solid #f1f2eb",
+    borderRadius: "2px",
     alignSelf: "center",
-    paddingTop: 30,
+    paddingTop: 25,
     cursor: "pointer",
     '&:hover': {
-        background: "#c4843c",
-     },
-     background: "#3a5381"
-     
+      background: "#7393B3",
+    },
+    background: "ffffff00"
+
   },
   appBar: {
     display: "flex",
@@ -54,15 +55,17 @@ const homeStyle = (theme) => ({
   container: {
     flexDirection: "column",
     textAlign: "center",
-    paddingRight: 20,
-    paddingLeft: 20,
-    paddingTop: "3vh"
+    paddingRight: 40,
+    paddingLeft: 60,
+    paddingTop: "3vh",
+    paddingBottom: 50,
+
   },
   name: {
     color: "#f1f2eb",
   },
   major: {
-    color: "black",
+    color: "#f1f2eb",
   }
 });
 

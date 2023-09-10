@@ -196,16 +196,16 @@ class Home extends Component {
             onChange={this.handleChange}
             onKeyDown={(e) => (e.key === "Enter" ? this.handleSubmit(e) : null)}
           />
-          <Grid container spacing={2}>
+          <Grid container spacing={4}>
             {this.state.resumes.map((resume) => (
               <Grid item xs={12} sm={6} md={6} lg={3} key={resume._id}>
                 <div
                   className={classes.resumeBox}
                   onClick={() => {
-                    this.setState({ open: true, currentResume: resume });
-                    console.log(resume.education[0].accreditation.inputStr);
-                    console.log(resume);
-                  }
+                      this.setState({ open: true, currentResume: resume });
+                      console.log(resume.education[0].accreditation.inputStr);
+                      console.log(resume);
+                    }
                   }
                 >
                   <Typography className={classes.name} variant="h5">
@@ -222,20 +222,18 @@ class Home extends Component {
 
         <Modal open={this.state.open}>
           <div style={{ "height": 750 }}>
-
             <iframe
               src={this.getSrcData(this.state.currentResume.fileData)}
               width="100%"
               height="100%"
               title="pdf"
             ></iframe>
-
             <Button onClick={() => this.setState({ open: false })} style={{ "width": "100%", "backgroundColor": "lightblue" }}>
               Close
             </Button>
           </div>
-        </Modal>
-      </div>
+        </Modal >
+      </div >
     );
   }
 }
