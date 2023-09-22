@@ -33,7 +33,7 @@ class Admin extends Component {
 
     fileReader.onload = (e) => {
       let resume = JSON.parse(e.target.result);
-      this.setState({ resume: resume.resumes[0].data });
+      this.setState({ resume: resume[0].data });
     };
 
     const fileReader2 = new FileReader();
