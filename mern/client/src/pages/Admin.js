@@ -72,14 +72,15 @@ class Admin extends Component {
   saveJSON = (event) => {
     event.preventDefault();
     this.setState({ loading: true });
-    let userData = localStorage.getItem("user");
-    let user = JSON.parse(userData);
+    
+    // let userData = localStorage.getItem("user");
+    // let user = JSON.parse(userData);
 
     fetch(`${APP_URL}/resume`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        accesstoken: user.accessToken,
+        // accesstoken: user.accesstoken, 
       },
       body: JSON.stringify({
         resume: this.state.resume,
@@ -88,16 +89,17 @@ class Admin extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "SUCCESS") {
-          this.savepdfData(user);
+          this.savepdfData();
         }
       })
       .catch((err) => {
         this.setState({ loading: false });
-        this.props.history.push("/login");
+        console.log(err);
+        //this.props.history.push("/login");
       });
   };
 
-  savepdfData = (user) => {
+  savepdfData = () => {
     let pdfURL = this.addQueryParams(`${APP_URL}/file`, {
       first: this.state.resume.name.first,
       last: this.state.resume.name.last
@@ -106,14 +108,15 @@ class Admin extends Component {
       method: "POST",
       headers: {
         "Content-Type": "application/pdf",
-        accesstoken: user.accessToken,
+        // accesstoken: user.accesstoken
       },
       body: this.state.pdfData,
     })
       .then(() => this.setState({ loading: false }))
       .catch((err) => {
         this.setState({ loading: false });
-        this.props.history.push("/login");
+        console.log(err);
+        //this.props.history.push("/login");
       });
   };
 
