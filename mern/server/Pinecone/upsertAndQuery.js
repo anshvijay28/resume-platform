@@ -121,8 +121,36 @@ async function query(searchEntry) {
 	};
 	const queryResponse = await index.query({ queryRequest });
 	let matches = queryResponse.matches;
+	const scores = matches.map(match => match.score)
 	let matchingNames = matches.map(match => match.metadata.name)
 	return matchingNames;
 }
+
+async function deleteAllVectors() {
+	const pinecone = new PineconeClient();
+	await pinecone.init({
+		environment: "eu-west1-gcp",
+		apiKey: PINECONE_API_KEY,
+	});
+	const index = pinecone.Index("resumes-index");
+	await index.delete1({
+		deleteAll: true,
+		namespace: ""
+	});
+	//namespace is "" because I never specified a name for the namespace 
+}
+
+// INSERTING NEW VECTORS TO PINECONE
+// insertVectors().then().catch()
+
+// DELETING ALL VECTORS IN PINECONE
+// deleteAllVectors().then().catch()
+
+// TESTING QUERYING
+// query("Ansh").then(res => {
+// 	console.log(res);
+// }).catch(err => {
+// 	console.log(err);
+// });
 
 module.exports = { query };

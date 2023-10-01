@@ -28,48 +28,48 @@ class Home extends Component {
     };
   }
 
-  componentDidMount() {
-    console.log("checking user");
-    const user = localStorage.getItem("user");
-    if (user === null || user === undefined) {
-      console.log("no user");
-      this.props.history.push("/login");
-    } else {
-      console.log("user found");
-      console.log(JSON.parse(user));
-    }
-    this.getConstants();
-  }
+  // componentDidMount() {
+  //   console.log("checking user");
+  //   const user = localStorage.getItem("user");
+  //   if (user === null || user === undefined) {
+  //     console.log("no user");
+  //     this.props.history.push("/login");
+  //   } else {
+  //     console.log("user found");
+  //     console.log(JSON.parse(user));
+  //   }
+  //   this.getConstants();
+  // }
 
-  getConstants = () => {
-    let responseClone;
-    let userData = localStorage.getItem("user");
-    let user = JSON.parse(userData);
-    fetch(`${APP_URL}/constants`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        accesstoken: user.accessToken
-      },
-    })
-      .then((res) => {
-        responseClone = res.clone();
-        return res.json()
-      })
-      .then((data) => {
-        console.log(data);
-        if (data.constants) {
-          this.setState({ constants: data.constants });
-        }
-      })
-      .catch((err) => {
-        console.log("The error was " + err);
-        console.log(responseClone);         // <-- added this line to see what the response object was when it was erroring
-        this.setState({ loading: false });
-        this.setState({ errors: err });
-        this.props.history.push("/login");
-      });
-  };
+  // getConstants = () => {
+  //   let responseClone;
+  //   let userData = localStorage.getItem("user");
+  //   let user = JSON.parse(userData);
+  //   fetch(`${APP_URL}/constants`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       accesstoken: user.accessToken
+  //     },
+  //   })
+  //     .then((res) => {
+  //       responseClone = res.clone();
+  //       return res.json()
+  //     })
+  //     .then((data) => {
+  //       console.log(data);
+  //       if (data.constants) {
+  //         this.setState({ constants: data.constants });
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log("The error was " + err);
+  //       console.log(responseClone);         // <-- added this line to see what the response object was when it was erroring
+  //       this.setState({ loading: false });
+  //       this.setState({ errors: err });
+  //       //this.props.history.push("/login");
+  //     });
+  // };
 
   handleChange = (event) => {
     this.setState({
@@ -77,10 +77,10 @@ class Home extends Component {
     });
   };
 
-  handleLogout = () => {
-    localStorage.clear();
-    this.props.history.push("/login");
-  };
+  // handleLogout = () => {
+  //   localStorage.clear();
+  //   this.props.history.push("/login");
+  // };
 
   handleFeedback = () => {
     window.open('https://docs.google.com/forms/d/e/1FAIpQLSeNwai5aNe1k-fHfat5LGV42anuI1MXTuTEjb_KdZ_aybhtBA/viewform', '_blank');
@@ -107,21 +107,26 @@ class Home extends Component {
 
 
   handleAdmin = () => {
-    this.props.history.push("/admin");
+    const adminPassword = prompt("Enter Passcode: ");
+    if (adminPassword === "BUSIC") {
+      this.props.history.push("/admin");
+    } else {
+      alert("Nice try buddy!");
+    }
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({ loading: true });
 
-    let userData = localStorage.getItem("user");
-    let user = JSON.parse(userData);
+    // let userData = localStorage.getItem("user");
+    // let user = JSON.parse(userData);
 
     fetch(`${APP_URL}/pinecone`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        accesstoken: user.accessToken,
+        // accesstoken: user.accesstoken,
       },
       body: JSON.stringify({
         search: this.state.search,
@@ -135,7 +140,8 @@ class Home extends Component {
       })
       .catch(err => {
         this.setState({ loading: false });
-        this.props.history.push("/login");
+        console.log(err);
+        //this.props.history.push("/login");
       });
   };
 
@@ -144,11 +150,11 @@ class Home extends Component {
     return "data:application/pdf;base64," + data;
   };
 
-  getIsAdmin = () => {
-    let userData = localStorage.getItem("user");
-    let user = JSON.parse(userData);
-    return this.state.constants.exec.includes(user.name);
-  }
+  // getIsAdmin = () => {
+  //   let userData = localStorage.getItem("user");
+  //   let user = JSON.parse(userData);
+  //   return this.state.constants.exec.includes(user.name);
+  // }
 
   render() {
     const { classes } = this.props;
@@ -172,17 +178,18 @@ class Home extends Component {
               color="inherit"
               className={classes.logout}
               onClick={this.handleAdmin}
-              disabled={this.state.constants === null || !this.getIsAdmin()}
+              //disabled={this.state.constants === null || !this.getIsAdmin()}
             >
               Admin
             </Button>
-            <Button
+            {/* <Button
               style={{ marginLeft: 50 }}
               color="inherit"
               className={classes.logout}
               onClick={this.handleLogout}
             >
               Logout
+<<<<<<< HEAD
             </Button>
             <Button
               style={{ marginLeft: 50 }}
@@ -192,6 +199,9 @@ class Home extends Component {
             >
               Feedback
             </Button>
+=======
+            </Button> */}
+>>>>>>> 19507e054cccf75651aff879d29abe9f17bbb93b
           </Toolbar>
         </AppBar>
         <div className={classes.container}>

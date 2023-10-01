@@ -9,104 +9,109 @@ const bson = require('bson');
 const {verifyClientToken} = require("./admin");
 var ObjectId = require('mongodb').ObjectID;
 
+// /resume endpoint
 exports.addResume = async (req, res) => {
-    if (req.body.resume === undefined || req.headers.accesstoken === undefined) {
+    if (req.body.resume === undefined) {
         console.log("bruh u boutta fail");
         res.status(400).send("Missing required fields");
         return;
     }
-    verifyClientToken(req.headers.accesstoken)
-    .then( (result) => {
-        if (result.action !== "PASS") {
-            res.status(401).send(result.action);
-            return;
-        } else if (result.action === "PASS") {
-            let db_connect = dbo.getDb();
-            db_connect
-                .collection("resumes")
-                .insertOne(req.body.resume)
-                .then((result) => {
-                    res.json({message: "Successfully added resume", status: "SUCCESS"});
-                })
-                .catch((err) => {
-                    res.json(err);
-                });
-        }
-    })
-    .catch( (err) => {
-        res.json(err);
-    });
+    // verifyClientToken(req.headers.accesstoken)
+    // .then( (result) => {
+    //     if (result.action !== "PASS") {
+    //         res.status(401).send(result.action);
+    //         return;
+    //     } else if (result.action === "PASS") {
+    //         // upload json of resume
+    //     }
+    // })
+    // .catch( (err) => {
+    //     res.json(err);
+    // });
+    let db_connect = dbo.getDb();
+    db_connect
+        .collection("resumes")
+        .insertOne(req.body.resume)
+        .then((result) => {
+            res.json({message: "Successfully added resume", status: "SUCCESS"});
+        })
+        .catch((err) => {
+            res.json(err);
+        });
 }
-
+// /file endpoint
 exports.addResumeFile = async (req, res) => {
-    if (req.headers.accesstoken === undefined) {
-        console.log("bruh u boutta fail");
-        res.status(400).send("Missing required fields");
-        return;
+    // if (req.headers.accesstoken === undefined) {
+    //     console.log("bruh u boutta fail");
+    //     res.status(400).send("Missing required fields");
+    //     return;
+    // }
+    // verifyClientToken(req.headers.accesstoken)
+    // .then( (result) => {
+    //     if (result.action !== "PASS") {
+    //         res.status(401).send(result.action);
+    //         return;
+    //     } else if (result.action === "PASS") {
+    //         // upload pdf of resume 
+    //     }
+    // })
+    // .catch( (err) => {
+    //     res.json(err);
+    // });
+    let query = {
+        "name.first": req.query.first,
+        "name.last": req.query.last
     }
-    verifyClientToken(req.headers.accesstoken)
-    .then( (result) => {
-        if (result.action !== "PASS") {
-            res.status(401).send(result.action);
-            return;
-        } else if (result.action === "PASS") {
-            let query = {
-                "name.first": req.query.first,
-                "name.last": req.query.last
-            }
-            let db_connect = dbo.getDb();
-            db_connect
-                .collection("resumes")
-                .updateOne(
-                    query,
-                    {
-                        $set: {
-                            fileData: bson.Binary(req.body.buffer)
-                        }
-                    },
-                    false,
-                    true
-                )
-                .then((result) => {
-                    res.json({message: "Successfully added resume", status: "SUCCESS"});
-                })
-                .catch((err) => {
-                    res.json(err);
-                });
-        }
-    })
-    .catch( (err) => {
-        res.json(err);
-    });
+    let db_connect = dbo.getDb();
+    db_connect
+        .collection("resumes")
+        .updateOne(
+            query,
+            {
+                $set: {
+                    fileData: bson.Binary(req.body.buffer)
+                }
+            },
+            false,
+            true
+        )
+        .then((result) => {
+            res.json({message: "Successfully added resume", status: "SUCCESS"});
+        })
+        .catch((err) => {
+            res.json(err);
+        });
 }
 
 exports.getDoc = async (req, res) => {
-    if (req.headers.accesstoken === undefined || req.query.id === undefined) {
+    if (req.query.id === undefined) {
         console.log("bruh u boutta fail");
         res.status(400).send("Missing required fields");
         return;
     }
-    verifyClientToken(req.headers.accesstoken)
-    .then( (result) => {
-        if (result.action !== "PASS") {
-            res.status(401).send(result.action);
-            return;
-        } else if (result.action === "PASS") {
-            let db_connect = dbo.getDb();
-            db_connect
-                .collection("resumes")
-                .findOne({_id: new ObjectId(req.query.id)})
-                .then((result) => {
-                    res.json({message: "Successfully found resume", status: "SUCCESS", doc: result});
-                })
-                .catch((err) => {
-                    res.json(err);
-                });
-        }
-    })
-    .catch( (err) => {
-        res.json(err);
-    });
+    // verifyClientToken(req.headers.accesstoken)
+    // .then( (result) => {
+    //     if (result.action !== "PASS") {
+    //         res.status(401).send(result.action);
+    //         return;
+    //     } else if (result.action === "PASS") {
+    //         // show resume on screen
+    //     }
+    // })
+    // .catch( (err) => {
+    //     res.json(err);
+    // });
+
+    let db_connect = dbo.getDb();
+    db_connect
+        .collection("resumes")
+        .findOne({_id: new ObjectId(req.query.id)})
+        .then((result) => {
+            res.json({message: "Successfully found resume", status: "SUCCESS", doc: result});
+        })
+        .catch((err) => {
+            res.json(err);
+        });
 }
 
 //Legacy Search (Thanks Mrinal)

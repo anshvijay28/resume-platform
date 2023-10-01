@@ -20,6 +20,8 @@ class Admin extends Component {
       loading: false,
       jsonFileURL: null,
       pdfData: null,
+      showJSON: false,
+      showPDF: false, 
     };
   }
 
@@ -41,6 +43,7 @@ class Admin extends Component {
     fileReader2.onload = (e) => {
       this.setState({ jsonFileURL: e.target.result });
     };
+    this.setState({ showJSON: true });
   };
 
   addQueryParams = (url, params) => {
@@ -67,19 +70,21 @@ class Admin extends Component {
     fileReader2.onload = (e) => {
       this.setState({ pdfFileURL: e.target.result });
     };
+    this.setState({ showPDF: true });
   };
 
   saveJSON = (event) => {
     event.preventDefault();
     this.setState({ loading: true });
-    let userData = localStorage.getItem("user");
-    let user = JSON.parse(userData);
+    
+    // let userData = localStorage.getItem("user");
+    // let user = JSON.parse(userData);
 
     fetch(`${APP_URL}/resume`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        accesstoken: user.accessToken,
+        // accesstoken: user.accesstoken, 
       },
       body: JSON.stringify({
         resume: this.state.resume,
@@ -88,16 +93,19 @@ class Admin extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "SUCCESS") {
-          this.savepdfData(user);
+          this.savepdfData();
+          alert("Resume has been successfully uploaded!");
+          this.setState({ showJSON: false, showPDF: false });
         }
       })
       .catch((err) => {
         this.setState({ loading: false });
-        this.props.history.push("/login");
+        console.log(err);
+        //this.props.history.push("/login");
       });
   };
 
-  savepdfData = (user) => {
+  savepdfData = () => {
     let pdfURL = this.addQueryParams(`${APP_URL}/file`, {
       first: this.state.resume.name.first,
       last: this.state.resume.name.last
@@ -106,14 +114,15 @@ class Admin extends Component {
       method: "POST",
       headers: {
         "Content-Type": "application/pdf",
-        accesstoken: user.accessToken,
+        // accesstoken: user.accesstoken
       },
       body: this.state.pdfData,
     })
       .then(() => this.setState({ loading: false }))
       .catch((err) => {
         this.setState({ loading: false });
-        this.props.history.push("/login");
+        console.log(err);
+        //this.props.history.push("/login");
       });
   };
 
@@ -147,7 +156,8 @@ class Admin extends Component {
         </AppBar>
         <div className={classes.buttons}>
           <input
-            style={{ display: "none" }}
+            style = {{ display: "none" }}
+            // style={{ display: this.state.showJSON ? "block" : "none" }}
             id="json-input"
             type="file"
             onChange={this.handleUploadJSON}
@@ -158,7 +168,8 @@ class Admin extends Component {
             </Button>
           </label>
           <input
-            style={{ display: "none" }}
+            style = {{ display: "none" }}
+            // style={{ display: this.state.showJSON ? "block" : "none" }}
             id="pdf-input"
             type="file"
             onChange={this.handleUploadPDF}
@@ -177,7 +188,7 @@ class Admin extends Component {
           </Button>
 
           <div className={classes.rowDisplay}>
-            {this.state.jsonFileURL !== null ? (
+            {this.state.jsonFileURL !== null && this.state.showJSON ? (
               <iframe
                 title="JSON Viewer"
                 src={this.state.jsonFileURL}
@@ -187,7 +198,7 @@ class Admin extends Component {
               <Typography>Please upload a JSON</Typography>
             )}
 
-            {this.state.pdfFileURL !== null ? (
+            {this.state.pdfFileURL !== null && this.state.showPDF ? (
               <iframe
                 title="PDF Viewer"
                 src={this.state.pdfFileURL}
