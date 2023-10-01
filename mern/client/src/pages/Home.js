@@ -82,6 +82,10 @@ class Home extends Component {
     this.props.history.push("/login");
   };
 
+  handleFeedback = () => {
+    window.open('https://docs.google.com/forms/d/e/1FAIpQLSeNwai5aNe1k-fHfat5LGV42anuI1MXTuTEjb_KdZ_aybhtBA/viewform', '_blank');
+  }
+
   getMajor = (brotherResume) => {
     let brotherMajor = brotherResume.education[0].accreditation.inputStr.toLowerCase();
     if (brotherMajor === '' && brotherResume.education.length > 1) {
@@ -179,6 +183,14 @@ class Home extends Component {
               onClick={this.handleLogout}
             >
               Logout
+            </Button>
+            <Button
+              style={{ marginLeft: 50 }}
+              color="inherit"
+              className={classes.feedback}
+              onClick={this.handleFeedback}
+            >
+              Feedback
             </Button>
           </Toolbar>
         </AppBar>
