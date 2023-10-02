@@ -5,10 +5,26 @@ const { PineconeClient } = require("@pinecone-database/pinecone");
 
 const fetch = require("cross-fetch");
 const resumes = require("./resumeObjects.json");
+const positions = require("./categoryJson/positions.json");
+const organizations = require("./categoryJson/organizations.json");
+const jobDescriptions = require("./categoryJson/jobDescription.json");
+const skills = require("./categoryJson/skills.json");
+
 let inputs = resumes.map((resume) => resume.rawText);
+let positionsInputs = positions.map((positionObject) => positionObject.position);
+let organizationsInputs = organizations.map((organizationObject) => organizationObject.organization);
+let jobDescriptionsInputs = jobDescriptions.map((jobDescriptionObject) => jobDescriptionObject.jobDescription);
+let skillsInputs = skills.map((skillObject) => skillObject.skillName);
 
 const OPEN_AI_API_KEY = process.env.OPEN_AI_API;
 const PINECONE_API_KEY = process.env.PINECONE_API;
+
+const { MongoClient } = require("mongodb");
+const Db = process.env.ATLAS_URI;
+const client = new MongoClient(Db, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 async function getEmbeddings(inputs) {
 	let embeddings = [];
@@ -121,8 +137,9 @@ async function query(searchEntry) {
 	};
 	const queryResponse = await index.query({ queryRequest });
 	let matches = queryResponse.matches;
-	const scores = matches.map(match => match.score)
-	let matchingNames = matches.map(match => match.metadata.name)
+	// console.log(matches);
+	// let matchingNames = matches.map(match => [match.metadata.name, match.score]);
+	let matchingNames = matches.map(match => match.metadata.name);
 	return matchingNames;
 }
 
@@ -138,6 +155,98 @@ async function deleteAllVectors() {
 		namespace: ""
 	});
 	//namespace is "" because I never specified a name for the namespace 
+}
+
+function getWorkExperienceIndex(fieldName, fileName) {
+	client.connect(function (err, db) {
+		var _db = db.db("resume_db");
+		_db.collection("resumes")
+			.find()
+			.project({ 
+				_id: 1, 
+				firstName: "$name.first", 
+				lastName: "$name.last", 
+				workExperience: 1, 
+			})
+			.toArray()
+			.then(resumes => {
+			const fs = require("fs");
+			let fieldObjects = [];
+			resumes.forEach(resume => {
+				resume.workExperience.forEach(experience => {
+					if (experience[fieldName] !== "" && experience[fieldName] !== null) {
+						fieldObject = {
+							_id: resume._id,
+							firstName: resume.firstName, 
+							lastName: resume.lastName, 
+							[fieldName]: experience[fieldName],
+						};
+						fieldObjects.push(fieldObject);
+					}
+				});
+			});
+			const jsonResumeText = JSON.stringify(fieldObjects);
+			fs.writeFileSync(fileName, jsonResumeText);
+			console.log("Created file");
+		}).catch(err => {
+		  console.log(err);
+		});
+	});
+}
+
+async function makeEmbeddingFile(input, fileName, inputObjects) {
+	const inputEmbeddings = await getEmbeddings(input);
+	let vectors = inputObjects.map((inputObject, i) => {
+		return {
+			id: inputObject._id,
+			firstName: inputObject.firstName, 
+			lastName: inputObject.lastName, 
+			values: inputEmbeddings[i],
+		}
+	});
+	const fs = require("fs");
+	const jsonResumeText = JSON.stringify(vectors);
+	fs.writeFileSync(fileName, jsonResumeText);
+	console.log("Created file");
+	return vectors;
+}
+
+function getSkills() {
+	client.connect(function (err, db) {
+		var _db = db.db("resume_db");
+		_db.collection("resumes")
+			.find()
+			.project({ 
+				_id: 1, 
+				firstName: "$name.first", 
+				lastName: "$name.last", 
+				skills: 1, 
+			})
+			.toArray()
+			.then(resumes => {
+			const fs = require("fs");
+			let skillObjects = [];
+			resumes.forEach(resume => {
+				resume.skills.forEach(skill => {
+					if (skill.name !== "" && skill.name !== null) {
+						skillObject = {
+							_id: resume._id,
+							firstName: resume.firstName, 
+							lastName: resume.lastName, 
+							skillName: skill.name,
+						};
+						skillObjects.push(skillObject);
+					}
+				});
+			});
+			const jsonResumeText = JSON.stringify(skillObjects);
+			fs.writeFileSync("skills.json", jsonResumeText);
+			console.log("Created file");
+		}).catch(err => {
+		  console.log(err);
+		});
+	});
+
 }
 
 // INSERTING NEW VECTORS TO PINECONE
