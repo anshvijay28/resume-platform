@@ -4,23 +4,26 @@ require("dotenv").config({ path: path.join(__dirname, '../', 'config.env') });
 const { PineconeClient } = require("@pinecone-database/pinecone");
 
 const fetch = require("cross-fetch");
-const rawText = require("./categoryJson/rawText.json");
-const positions = require("./categoryJson/positions.json");
-const organizations = require("./categoryJson/organizations.json");
-const jobDescriptions = require("./categoryJson/jobDescription.json");
-const skills = require("./categoryJson/skills.json");
-const majors = require("./categoryJson/majors.json");
-const names = require("./categoryJson/names.json");
 
-let rawTextInputs = rawText.map((resume) => resume.rawText);
-let positionsInputs = positions.map((positionObject) => positionObject.position);
-let organizationsInputs = organizations.map((organizationObject) => organizationObject.organization);
-let jobDescriptionsInputs = jobDescriptions.map((jobDescriptionObject) => jobDescriptionObject.jobDescription);
-let skillsInputs = skills.map((skillObject) => skillObject.skillName);
-let majorsInputs = majors.map((majorObject) => majorObject.major);
-let namesInput = names.map((nameObject) => nameObject.name);
+// have to comment out for heroku because these are all ignored in git 
 
-const weightedEmbeddings = require("./weightedEmbeddings.json");
+// const rawText = require("./categoryJson/rawText.json");
+// const positions = require("./categoryJson/positions.json");
+// const organizations = require("./categoryJson/organizations.json");
+// const jobDescriptions = require("./categoryJson/jobDescription.json");
+// const skills = require("./categoryJson/skills.json");
+// const majors = require("./categoryJson/majors.json");
+// const names = require("./categoryJson/names.json");
+
+// let rawTextInputs = rawText.map((resume) => resume.rawText);
+// let positionsInputs = positions.map((positionObject) => positionObject.position);
+// let organizationsInputs = organizations.map((organizationObject) => organizationObject.organization);
+// let jobDescriptionsInputs = jobDescriptions.map((jobDescriptionObject) => jobDescriptionObject.jobDescription);
+// let skillsInputs = skills.map((skillObject) => skillObject.skillName);
+// let majorsInputs = majors.map((majorObject) => majorObject.major);
+// let namesInput = names.map((nameObject) => nameObject.name);
+
+// const weightedEmbeddings = require("./weightedEmbeddings.json");
 
 const OPEN_AI_API_KEY = process.env.OPEN_AI_API;
 const PINECONE_API_KEY = process.env.PINECONE_API;
