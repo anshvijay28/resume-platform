@@ -4,22 +4,29 @@ require("dotenv").config({ path: path.join(__dirname, '../', 'config.env') });
 const { PineconeClient } = require("@pinecone-database/pinecone");
 
 const fetch = require("cross-fetch");
-const resumes = require("./resumeObjects.json");
+const rawText = require("./categoryJson/rawText.json");
 const positions = require("./categoryJson/positions.json");
 const organizations = require("./categoryJson/organizations.json");
 const jobDescriptions = require("./categoryJson/jobDescription.json");
 const skills = require("./categoryJson/skills.json");
+const majors = require("./categoryJson/majors.json");
+const names = require("./categoryJson/names.json");
 
-let inputs = resumes.map((resume) => resume.rawText);
+let rawTextInputs = rawText.map((resume) => resume.rawText);
 let positionsInputs = positions.map((positionObject) => positionObject.position);
 let organizationsInputs = organizations.map((organizationObject) => organizationObject.organization);
 let jobDescriptionsInputs = jobDescriptions.map((jobDescriptionObject) => jobDescriptionObject.jobDescription);
 let skillsInputs = skills.map((skillObject) => skillObject.skillName);
+let majorsInputs = majors.map((majorObject) => majorObject.major);
+let namesInput = names.map((nameObject) => nameObject.name);
+
+const weightedEmbeddings = require("./weightedEmbeddings.json");
 
 const OPEN_AI_API_KEY = process.env.OPEN_AI_API;
 const PINECONE_API_KEY = process.env.PINECONE_API;
 
 const { MongoClient } = require("mongodb");
+const { raw } = require("body-parser");
 const Db = process.env.ATLAS_URI;
 const client = new MongoClient(Db, {
   useNewUrlParser: true,
@@ -66,11 +73,11 @@ async function getEmbeddings(inputs) {
 	return embeddings;
 }
 
-async function processEmbeddings() {
+async function processEmbeddings(inputs, resumes) {
 	const embeddings = await getEmbeddings(inputs);
 	let vectors = resumes.map((resume, i) => {
 		return {
-			id: resume._id,
+			id: resume.id,
 			metadata: {
 				name: `${resume.firstName} ${resume.lastName}`
 			},
@@ -80,13 +87,38 @@ async function processEmbeddings() {
 	return vectors;
 }
 
-async function insertVectors() {
+async function insertVectors(inputs, resumes) {
 	const pinecone = new PineconeClient();
 	await pinecone.init({
 		environment: "eu-west1-gcp",
 		apiKey: PINECONE_API_KEY,
 	});
-	const vectors = await processEmbeddings();
+	const vectors = await processEmbeddings(inputs, resumes);
+	let insertBatches = [];
+	const index = pinecone.Index("resumes-index");
+	while (vectors.length) {
+		let batchedVectors = vectors.splice(0, 250);
+		const upsertRequest = {
+			vectors: batchedVectors,
+			//namespace: "example-namespace",    <------ you only need namespaces if you want to
+			//									 <------ separate embeddings into different groups
+			//									 <------ within the same index. however in this case
+			//									 <------ every vector represents a resume so there
+			//									 <------ is no need to partition vectors
+		}
+		const upsertResponse = await index.upsert({ upsertRequest });
+		insertBatches.push(upsertResponse);
+	}
+	console.log(insertBatches);
+}
+
+async function insertFormattedVectors(formattedVectors) {
+	const pinecone = new PineconeClient();
+	await pinecone.init({
+		environment: "eu-west1-gcp",
+		apiKey: PINECONE_API_KEY,
+	});
+	const vectors = formattedVectors;
 	let insertBatches = [];
 	const index = pinecone.Index("resumes-index");
 	while (vectors.length) {
@@ -131,14 +163,14 @@ async function query(searchEntry) {
 	const index = pinecone.Index("resumes-index");
 	const queryRequest = {
 		vector: userVector,
-		topK: 30,
+		topK: 28,
 		includeValues: false,
 		includeMetadata: true,
 	};
 	const queryResponse = await index.query({ queryRequest });
 	let matches = queryResponse.matches;
-	// console.log(matches);
 	// let matchingNames = matches.map(match => [match.metadata.name, match.score]);
+	// eventually wanna softmax instead 
 	let matchingNames = matches.map(match => match.metadata.name);
 	return matchingNames;
 }
@@ -175,7 +207,7 @@ function getWorkExperienceIndex(fieldName, fileName) {
 			resumes.forEach(resume => {
 				resume.workExperience.forEach(experience => {
 					if (experience[fieldName] !== "" && experience[fieldName] !== null) {
-						fieldObject = {
+						const fieldObject = {
 							_id: resume._id,
 							firstName: resume.firstName, 
 							lastName: resume.lastName, 
@@ -198,7 +230,7 @@ async function makeEmbeddingFile(input, fileName, inputObjects) {
 	const inputEmbeddings = await getEmbeddings(input);
 	let vectors = inputObjects.map((inputObject, i) => {
 		return {
-			id: inputObject._id,
+			id: inputObject.id,
 			firstName: inputObject.firstName, 
 			lastName: inputObject.lastName, 
 			values: inputEmbeddings[i],
@@ -229,7 +261,7 @@ function getSkills() {
 			resumes.forEach(resume => {
 				resume.skills.forEach(skill => {
 					if (skill.name !== "" && skill.name !== null) {
-						skillObject = {
+						const skillObject = {
 							_id: resume._id,
 							firstName: resume.firstName, 
 							lastName: resume.lastName, 
@@ -246,20 +278,57 @@ function getSkills() {
 		  console.log(err);
 		});
 	});
-
 }
 
-// INSERTING NEW VECTORS TO PINECONE
-// insertVectors().then().catch()
+function getNamesFile() {
+	names = []
+	const fs = require("fs");
+	rawText.forEach(rawTextObject => {
+		const nameObject = {
+			id: rawTextObject._id,
+			firstName: rawTextObject.firstName,
+			lastName: rawTextObject.lastName,
+			name: `${rawTextObject.firstName} ${rawTextObject.lastName}`
+		}
+		names.push(nameObject);
+	});
+	const jsonResumeText = JSON.stringify(names);
+	fs.writeFileSync("names.json", jsonResumeText);
+	console.log("Created file");
+}
 
-// DELETING ALL VECTORS IN PINECONE
-// deleteAllVectors().then().catch()
-
-// TESTING QUERYING
-// query("Ansh").then(res => {
-// 	console.log(res);
-// }).catch(err => {
-// 	console.log(err);
-// });
+function getMajorsFile() {
+	client.connect(function (err, db) {
+		var _db = db.db("resume_db");
+		_db.collection("resumes")
+			.find()
+			.project({ 
+				_id: 1, 
+				firstName: "$name.first", 
+				lastName: "$name.last", 
+				major: { $arrayElemAt: ["$education.accreditation.education", 0] },
+			})
+			.toArray()
+			.then(resumes => {
+			const fs = require("fs");
+			let majorObjects = [];
+			resumes.forEach(resume => {
+				const majorObject = {
+					id: resume._id,
+					firstName: resume.firstName, 
+					lastName: resume.lastName, 
+					major: resume.major.replace("Bachelor of Science in ", "")
+				};
+				majorObjects.push(majorObject);
+				
+			});
+			const jsonResumeText = JSON.stringify(majorObjects);
+			fs.writeFileSync("majors.json", jsonResumeText);
+			console.log("Created file");
+		}).catch(err => {
+		  console.log(err);
+		});
+	});
+}
 
 module.exports = { query };
