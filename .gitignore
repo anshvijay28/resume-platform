@@ -108,3 +108,13 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Apple 
+.DS_STORE
+mern/.DS_STORE
+mern/server/.DS_STORE
+
+#JSON embedding/index files 
+mern/server/Pinecone/categoryEmbeddings
+mern/server/Pinecone/categoryJson
+mern/server/Pinecone/weightedEmbeddings.json 

@@ -189,8 +189,7 @@ class Home extends Component {
               onClick={this.handleLogout}
             >
               Logout
-<<<<<<< HEAD
-            </Button>
+            </Button> */}
             <Button
               style={{ marginLeft: 50 }}
               color="inherit"
@@ -199,9 +198,6 @@ class Home extends Component {
             >
               Feedback
             </Button>
-=======
-            </Button> */}
->>>>>>> 19507e054cccf75651aff879d29abe9f17bbb93b
           </Toolbar>
         </AppBar>
         <div className={classes.container}>
